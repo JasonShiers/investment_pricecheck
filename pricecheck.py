@@ -24,7 +24,7 @@ from selenium.common.exceptions import NoSuchElementException, TimeoutException
 
 class GBP_Price(float):
     """ Unit price of a holding in GBP """
-    def __new__(cls, value, currency='GBP'):
+    def __new__(cls, value: float | str, currency: str='GBP'):
         value = float(value)
         if currency == 'GBP':
             pass
@@ -34,11 +34,11 @@ class GBP_Price(float):
             raise NotImplementedError(f"Currency {currency} not supported")
         return float.__new__(cls, value)
 
-    def __str__(self, format_spec=".4g"):
+    def __str__(self, format_spec: str=".4g"):
         return f"£{self:{format_spec}}"
 
 
-def setup_driver() -> WebDriver:
+def setup_chromium_driver() -> WebDriver:
     """ Instantiate Selenium Chromium Webdriver """
     options = webdriver.ChromeOptions()
     options.add_argument("--disable-extensions")
@@ -87,13 +87,10 @@ def get_price_from_lse(driver: WebDriver) -> GBP_Price | None:
     return val
 
 
-def main() -> None:
+def main(driver: WebDriver) -> None:
     """ Main function """
     # Read holdings as csv of symbol, url
     holdings = pd.read_csv('holdings.csv')
-
-    # Start web driver
-    driver = setup_driver()
 
     # Loop over holdings and build list list of prices
     prices = []
@@ -119,9 +116,9 @@ def main() -> None:
 
 if __name__ == "__main__":
     # Start web driver
-    driver = setup_driver()
+    chromium_driver = setup_chromium_driver()
     try:
-        main()
+        main(chromium_driver)
     finally:
         # Shut down web driver
-        driver.quit()
+        chromium_driver.quit()
