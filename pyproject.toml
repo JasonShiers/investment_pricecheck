@@ -1,0 +1,21 @@
+[project]
+name = "investment_prices"
+version = "0.2.0"
+description = "Fetches current investment prices from broker websites and saves them to CSV"
+requires-python = ">=3.12"
+dependencies = [
+    "python-dotenv>=1.0",
+    "selenium>=4.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.4",
+]
+
+[project.scripts]
+investment_prices = "investment_prices.__main__:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
